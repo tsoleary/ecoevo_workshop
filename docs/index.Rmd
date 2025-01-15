@@ -1,8 +1,9 @@
 ---
-title: "Template Book Title"
+title: "Workshop: Data Visualization & Statistics in R"
+subtitle: "Ecology & Evolution: Senior Seminar"
 author: "TS O'Leary"
-date: "2023-03-22"
-description: "Template gitbook report of analysis"
+date: "2025-02-11"
+description: "Spring 2025: Workshop in R for a seminar course at UVM."
 output:
   bookdown::gitbook:
     number_sections: true
@@ -18,46 +19,46 @@ documentclass: book
 knitr::opts_knit$set(root.dir = here::here())
 ```
 
-# Project goal {-}
+# Workshop overview {-}
 
-This is a minimal working book that contains the scripts used to create my analysis
+## Step 0: Download R & RStudio  {-}
 
-# Star Wars Analysis
+1. 
+2. 
 
-Analyzing and visualizing the Star Wars data set.
+## Agenda {-}
 
-## Load data & Count species
+### Day One {-}
 
-First the data is loaded and then the species are counted.
+-
+-
+-
+-
 
-<!-- If you want to include code but don't want to run it. You may use eval = FALSE in the chunk option. This will print, but not execute the code. -->
+### Day Two {-}
 
-```{r, file = "src/starwars/01_count_species.R", eval = FALSE}
+-
+-
+-
+-
+
+
+## Links {-}
+
+
+
+
+
+
+
+# Day One
+
+```{r, file = "src/01_day.R"}
 ```
 
-## Visualize data
+# Day Two
 
-Visualize histogram of counted species.
-
-```{r, file = "src/starwars/02_histogram_species.R"}
-```
-
-# Iris Analysis
-
-Analyzing and visualizing the Iris data set.
-
-## Load data & Group species
-
-The data is loaded and then the species are grouped.
-
-```{r, file = "src/iris/01_load_group_data.R", eval = FALSE}
-```
-
-## Petal measurements
-
-Scatter plot of the petal measurements.
-
-```{r, file = "src/iris/02_petal_plot.R"}
+```{r, file = "src/02_day.R"}
 ```
 
 
