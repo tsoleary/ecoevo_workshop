@@ -174,12 +174,174 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb77-3"><a href="day-two-1.html#cb77-3" tabindex="-1"></a><span class="co"># TS O&#39;Leary</span></span>
 <span id="cb77-4"><a href="day-two-1.html#cb77-4" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb77-5"><a href="day-two-1.html#cb77-5" tabindex="-1"></a></span>
-<span id="cb77-6"><a href="day-two-1.html#cb77-6" tabindex="-1"></a><span class="co"># Load libraries ---------------------------------------------------------------</span></span>
+<span id="cb77-6"><a href="day-two-1.html#cb77-6" tabindex="-1"></a><span class="co"># Load libraries</span></span>
 <span id="cb77-7"><a href="day-two-1.html#cb77-7" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb77-8"><a href="day-two-1.html#cb77-8" tabindex="-1"></a></span>
-<span id="cb77-9"><a href="day-two-1.html#cb77-9" tabindex="-1"></a><span class="co"># Load data</span></span>
-<span id="cb77-10"><a href="day-two-1.html#cb77-10" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;data/raw/lockwood_et_al_2018_survival.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb77-11"><a href="day-two-1.html#cb77-11" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;temperate&quot;</span>, <span class="st">&quot;tropical&quot;</span>))</span></code></pre></div>
+<span id="cb77-9"><a href="day-two-1.html#cb77-9" tabindex="-1"></a><span class="co"># Import data </span></span>
+<span id="cb77-10"><a href="day-two-1.html#cb77-10" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;data/raw/lockwood_et_al_2018_LT50.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb77-11"><a href="day-two-1.html#cb77-11" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Pop =</span> <span class="fu">factor</span>(Pop, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;VT&quot;</span>, <span class="st">&quot;BEA&quot;</span>, <span class="st">&quot;RFM&quot;</span>, <span class="st">&quot;Tropical&quot;</span>)))</span></code></pre></div>
+<pre><code>## Rows: 25 Columns: 10
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (5): Stock, Locale, StateCountry, Region, Pop
+## dbl (5): Year, Lat, Long, Adult_LT50, Embryo_LT50
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="day-two-1.html#cb79-1" tabindex="-1"></a><span class="co"># Change the theme to not have the grey</span></span>
+<span id="cb79-2"><a href="day-two-1.html#cb79-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb79-3"><a href="day-two-1.html#cb79-3" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb79-4"><a href="day-two-1.html#cb79-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Pop, </span>
+<span id="cb79-5"><a href="day-two-1.html#cb79-5" tabindex="-1"></a>                   <span class="at">y =</span> Embryo_LT50,</span>
+<span id="cb79-6"><a href="day-two-1.html#cb79-6" tabindex="-1"></a>                   <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb79-7"><a href="day-two-1.html#cb79-7" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb79-8"><a href="day-two-1.html#cb79-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range
+## (`stat_boxplot()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="day-two-1.html#cb81-1" tabindex="-1"></a><span class="co"># Add points</span></span>
+<span id="cb81-2"><a href="day-two-1.html#cb81-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb81-3"><a href="day-two-1.html#cb81-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Pop, </span>
+<span id="cb81-4"><a href="day-two-1.html#cb81-4" tabindex="-1"></a>             <span class="at">y =</span> Embryo_LT50,</span>
+<span id="cb81-5"><a href="day-two-1.html#cb81-5" tabindex="-1"></a>             <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb81-6"><a href="day-two-1.html#cb81-6" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb81-7"><a href="day-two-1.html#cb81-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb81-8"><a href="day-two-1.html#cb81-8" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb81-9"><a href="day-two-1.html#cb81-9" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="fu">expression</span>(<span class="st">&quot;Embryo LT&quot;</span>[<span class="dv">50</span>]<span class="sc">*</span><span class="st">&quot; (°C)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb81-10"><a href="day-two-1.html#cb81-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range
+## (`stat_boxplot()`).</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="day-two-1.html#cb84-1" tabindex="-1"></a><span class="co"># Change axis labels</span></span>
+<span id="cb84-2"><a href="day-two-1.html#cb84-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb84-3"><a href="day-two-1.html#cb84-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Pop, </span>
+<span id="cb84-4"><a href="day-two-1.html#cb84-4" tabindex="-1"></a>             <span class="at">y =</span> Embryo_LT50,</span>
+<span id="cb84-5"><a href="day-two-1.html#cb84-5" tabindex="-1"></a>             <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb84-6"><a href="day-two-1.html#cb84-6" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb84-7"><a href="day-two-1.html#cb84-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb84-8"><a href="day-two-1.html#cb84-8" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb84-9"><a href="day-two-1.html#cb84-9" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="fu">expression</span>(<span class="st">&quot;Embryo LT&quot;</span>[<span class="dv">50</span>]<span class="sc">*</span><span class="st">&quot; (°C)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb84-10"><a href="day-two-1.html#cb84-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
+## Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="day-two-1.html#cb86-1" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/embryo_lt50.pdf&quot;</span>,</span>
+<span id="cb86-2"><a href="day-two-1.html#cb86-2" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">5</span>,</span>
+<span id="cb86-3"><a href="day-two-1.html#cb86-3" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">4</span>,</span>
+<span id="cb86-4"><a href="day-two-1.html#cb86-4" tabindex="-1"></a>       <span class="at">units =</span> <span class="st">&quot;in&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
+## Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="day-two-1.html#cb88-1" tabindex="-1"></a><span class="co"># One-way ANOVA</span></span>
+<span id="cb88-2"><a href="day-two-1.html#cb88-2" tabindex="-1"></a><span class="fu">aov</span>(Embryo_LT50 <span class="sc">~</span> Pop, <span class="at">data =</span> dat) <span class="sc">|&gt;</span> </span>
+<span id="cb88-3"><a href="day-two-1.html#cb88-3" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Pop          3  3.848  1.2827   10.16 0.000282 ***
+## Residuals   20  2.526  0.1263                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 1 observation deleted due to missingness</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="day-two-1.html#cb90-1" tabindex="-1"></a><span class="co"># You can also use the broom package to save the results in a data frame</span></span>
+<span id="cb90-2"><a href="day-two-1.html#cb90-2" tabindex="-1"></a><span class="fu">aov</span>(Embryo_LT50 <span class="sc">~</span> Pop, <span class="at">data =</span> dat) <span class="sc">|&gt;</span> </span>
+<span id="cb90-3"><a href="day-two-1.html#cb90-3" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 6
+##   term         df sumsq meansq statistic   p.value
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Pop           3  3.85  1.28       10.2  0.000282
+## 2 Residuals    20  2.53  0.126      NA   NA</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="day-two-1.html#cb92-1" tabindex="-1"></a><span class="co"># You can also use the TukeyHSD test to see which specific levels of the factor</span></span>
+<span id="cb92-2"><a href="day-two-1.html#cb92-2" tabindex="-1"></a><span class="co"># in this case what we are calling population groups are different from each other</span></span>
+<span id="cb92-3"><a href="day-two-1.html#cb92-3" tabindex="-1"></a><span class="fu">aov</span>(Embryo_LT50 <span class="sc">~</span> Pop, <span class="at">data =</span> dat) <span class="sc">|&gt;</span> </span>
+<span id="cb92-4"><a href="day-two-1.html#cb92-4" tabindex="-1"></a>  <span class="fu">TukeyHSD</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb92-5"><a href="day-two-1.html#cb92-5" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb92-6"><a href="day-two-1.html#cb92-6" tabindex="-1"></a>  <span class="fu">arrange</span>(adj.p.value)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 7
+##   term  contrast     null.value estimate conf.low conf.high adj.p.value
+##   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Pop   Tropical-VT           0   0.990    0.423      1.56     0.000481
+## 2 Pop   Tropical-RFM          0   1.05     0.445      1.65     0.000499
+## 3 Pop   Tropical-BEA          0   0.642    0.0129     1.27     0.0444  
+## 4 Pop   RFM-BEA               0  -0.406   -1.01       0.197    0.266   
+## 5 Pop   BEA-VT                0   0.348   -0.219      0.915    0.342   
+## 6 Pop   RFM-VT                0  -0.0579  -0.595      0.479    0.990</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="day-two-1.html#cb94-1" tabindex="-1"></a><span class="co"># What if we want to run a two-way ANOVA with Life Stage and Population on LT50</span></span>
+<span id="cb94-2"><a href="day-two-1.html#cb94-2" tabindex="-1"></a>dat_long <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb94-3"><a href="day-two-1.html#cb94-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;Embryo_LT50&quot;</span>, <span class="st">&quot;Adult_LT50&quot;</span>),</span>
+<span id="cb94-4"><a href="day-two-1.html#cb94-4" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;LifeStage&quot;</span>,</span>
+<span id="cb94-5"><a href="day-two-1.html#cb94-5" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;LT50&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb94-6"><a href="day-two-1.html#cb94-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">LifeStage =</span> <span class="fu">str_remove_all</span>(LifeStage, <span class="st">&quot;_LT50&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb94-7"><a href="day-two-1.html#cb94-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">LifeStage =</span> <span class="fu">factor</span>(LifeStage, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Embryo&quot;</span>, <span class="st">&quot;Adult&quot;</span>)))</span>
+<span id="cb94-8"><a href="day-two-1.html#cb94-8" tabindex="-1"></a></span>
+<span id="cb94-9"><a href="day-two-1.html#cb94-9" tabindex="-1"></a><span class="co"># Add points</span></span>
+<span id="cb94-10"><a href="day-two-1.html#cb94-10" tabindex="-1"></a>dat_long <span class="sc">|&gt;</span> </span>
+<span id="cb94-11"><a href="day-two-1.html#cb94-11" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> LifeStage,</span>
+<span id="cb94-12"><a href="day-two-1.html#cb94-12" tabindex="-1"></a>             <span class="at">y =</span> LT50,</span>
+<span id="cb94-13"><a href="day-two-1.html#cb94-13" tabindex="-1"></a>             <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb94-14"><a href="day-two-1.html#cb94-14" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb94-15"><a href="day-two-1.html#cb94-15" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb94-16"><a href="day-two-1.html#cb94-16" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.75</span>)) <span class="sc">+</span></span>
+<span id="cb94-17"><a href="day-two-1.html#cb94-17" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
+## Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="day-two-1.html#cb96-1" tabindex="-1"></a><span class="co"># A solid plot with all points</span></span>
+<span id="cb96-2"><a href="day-two-1.html#cb96-2" tabindex="-1"></a>dat_long <span class="sc">|&gt;</span> </span>
+<span id="cb96-3"><a href="day-two-1.html#cb96-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> LifeStage,</span>
+<span id="cb96-4"><a href="day-two-1.html#cb96-4" tabindex="-1"></a>             <span class="at">y =</span> LT50,</span>
+<span id="cb96-5"><a href="day-two-1.html#cb96-5" tabindex="-1"></a>             <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb96-6"><a href="day-two-1.html#cb96-6" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb96-7"><a href="day-two-1.html#cb96-7" tabindex="-1"></a>  ggbeeswarm<span class="sc">::</span><span class="fu">geom_beeswarm</span>(<span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb96-8"><a href="day-two-1.html#cb96-8" tabindex="-1"></a>                            <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb96-9"><a href="day-two-1.html#cb96-9" tabindex="-1"></a>                            <span class="at">cex =</span> <span class="dv">2</span>,</span>
+<span id="cb96-10"><a href="day-two-1.html#cb96-10" tabindex="-1"></a>                            <span class="at">dodge.width =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb96-11"><a href="day-two-1.html#cb96-11" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb96-12"><a href="day-two-1.html#cb96-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
+## Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-5.png" width="672" /></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="day-two-1.html#cb98-1" tabindex="-1"></a><span class="co"># Save it with all LT50s</span></span>
+<span id="cb98-2"><a href="day-two-1.html#cb98-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/lt50.pdf&quot;</span>,</span>
+<span id="cb98-3"><a href="day-two-1.html#cb98-3" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">5</span>,</span>
+<span id="cb98-4"><a href="day-two-1.html#cb98-4" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">4</span>,</span>
+<span id="cb98-5"><a href="day-two-1.html#cb98-5" tabindex="-1"></a>       <span class="at">units =</span> <span class="st">&quot;in&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
+## Removed 1 row containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="day-two-1.html#cb100-1" tabindex="-1"></a><span class="co"># Two-way ANOVA on Region and Life Stage effect on LT50</span></span>
+<span id="cb100-2"><a href="day-two-1.html#cb100-2" tabindex="-1"></a><span class="fu">lm</span>(LT50 <span class="sc">~</span> Region<span class="sc">*</span>LifeStage, <span class="at">dat =</span> dat_long) <span class="sc">|&gt;</span></span>
+<span id="cb100-3"><a href="day-two-1.html#cb100-3" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">Anova</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb100-4"><a href="day-two-1.html#cb100-4" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 5
+##   term              sumsq    df statistic   p.value
+##   &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Region             2.16     1      20.2  4.85e- 5
+## 2 LifeStage        279.       1    2609.   1.72e-41
+## 3 Region:LifeStage   1.23     1      11.5  1.46e- 3
+## 4 Residuals          4.82    45      NA   NA</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="day-two-1.html#cb102-1" tabindex="-1"></a><span class="co"># Pair-wise comparison of all groups</span></span>
+<span id="cb102-2"><a href="day-two-1.html#cb102-2" tabindex="-1"></a><span class="fu">lm</span>(LT50 <span class="sc">~</span> Region<span class="sc">*</span>LifeStage, <span class="at">dat =</span> dat_long) <span class="sc">|&gt;</span></span>
+<span id="cb102-3"><a href="day-two-1.html#cb102-3" tabindex="-1"></a>  emmeans<span class="sc">::</span><span class="fu">emmeans</span>(<span class="sc">~</span> Region <span class="sc">*</span> LifeStage) <span class="sc">|&gt;</span> </span>
+<span id="cb102-4"><a href="day-two-1.html#cb102-4" tabindex="-1"></a>  <span class="fu">pairs</span>(<span class="at">adjust =</span> <span class="st">&quot;tukey&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb102-5"><a href="day-two-1.html#cb102-5" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 8
+##   term        contrast null.value estimate std.error    df statistic adj.p.value
+##   &lt;chr&gt;       &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Region*Lif… Tempera…          0   -0.917     0.164    45    -5.57     7.80e- 6
+## 2 Region*Lif… Tempera…          0   -4.94      0.105    45   -47.1      2.40e-13
+## 3 Region*Lif… Tempera…          0   -5.07      0.164    45   -30.8      2.40e-13
+## 4 Region*Lif… Tropica…          0   -4.02      0.164    45   -24.6      2.40e-13
+## 5 Region*Lif… Tropica…          0   -4.15      0.207    45   -20.1      2.40e-13
+## 6 Region*Lif… Tempera…          0   -0.130     0.164    45    -0.795    8.56e- 1</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="day-two-1.html#cb104-1" tabindex="-1"></a><span class="co"># Survival data we are unlikely to have time to cover --------------------------</span></span>
+<span id="cb104-2"><a href="day-two-1.html#cb104-2" tabindex="-1"></a></span>
+<span id="cb104-3"><a href="day-two-1.html#cb104-3" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb104-4"><a href="day-two-1.html#cb104-4" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;data/raw/lockwood_et_al_2018_survival.txt&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb104-5"><a href="day-two-1.html#cb104-5" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;temperate&quot;</span>, <span class="st">&quot;tropical&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 933 Columns: 6
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
@@ -188,50 +350,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="day-two-1.html#cb79-1" tabindex="-1"></a><span class="co"># Survival data</span></span>
-<span id="cb79-2"><a href="day-two-1.html#cb79-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
-<span id="cb79-3"><a href="day-two-1.html#cb79-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> survival,</span>
-<span id="cb79-4"><a href="day-two-1.html#cb79-4" tabindex="-1"></a>             <span class="at">x =</span> temperature, </span>
-<span id="cb79-5"><a href="day-two-1.html#cb79-5" tabindex="-1"></a>             <span class="at">fill =</span> genotype,</span>
-<span id="cb79-6"><a href="day-two-1.html#cb79-6" tabindex="-1"></a>             <span class="at">color =</span> genotype)) <span class="sc">+</span></span>
-<span id="cb79-7"><a href="day-two-1.html#cb79-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">color =</span> <span class="st">&quot;grey80&quot;</span>) <span class="sc">+</span></span>
-<span id="cb79-8"><a href="day-two-1.html#cb79-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> region),</span>
-<span id="cb79-9"><a href="day-two-1.html#cb79-9" tabindex="-1"></a>              <span class="at">method =</span> drc<span class="sc">::</span>drm,</span>
-<span id="cb79-10"><a href="day-two-1.html#cb79-10" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>()),</span>
-<span id="cb79-11"><a href="day-two-1.html#cb79-11" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb79-12"><a href="day-two-1.html#cb79-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb79-13"><a href="day-two-1.html#cb79-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="day-two-1.html#cb106-1" tabindex="-1"></a><span class="co"># Survival data</span></span>
+<span id="cb106-2"><a href="day-two-1.html#cb106-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb106-3"><a href="day-two-1.html#cb106-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> survival,</span>
+<span id="cb106-4"><a href="day-two-1.html#cb106-4" tabindex="-1"></a>             <span class="at">x =</span> temperature, </span>
+<span id="cb106-5"><a href="day-two-1.html#cb106-5" tabindex="-1"></a>             <span class="at">fill =</span> genotype,</span>
+<span id="cb106-6"><a href="day-two-1.html#cb106-6" tabindex="-1"></a>             <span class="at">color =</span> genotype)) <span class="sc">+</span></span>
+<span id="cb106-7"><a href="day-two-1.html#cb106-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">color =</span> <span class="st">&quot;grey80&quot;</span>) <span class="sc">+</span></span>
+<span id="cb106-8"><a href="day-two-1.html#cb106-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> region),</span>
+<span id="cb106-9"><a href="day-two-1.html#cb106-9" tabindex="-1"></a>              <span class="at">method =</span> drc<span class="sc">::</span>drm,</span>
+<span id="cb106-10"><a href="day-two-1.html#cb106-10" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>()),</span>
+<span id="cb106-11"><a href="day-two-1.html#cb106-11" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb106-12"><a href="day-two-1.html#cb106-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb106-13"><a href="day-two-1.html#cb106-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="day-two-1.html#cb81-1" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
-<span id="cb81-2"><a href="day-two-1.html#cb81-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> survival,</span>
-<span id="cb81-3"><a href="day-two-1.html#cb81-3" tabindex="-1"></a>             <span class="at">x =</span> temperature, </span>
-<span id="cb81-4"><a href="day-two-1.html#cb81-4" tabindex="-1"></a>             <span class="at">group =</span> genotype,</span>
-<span id="cb81-5"><a href="day-two-1.html#cb81-5" tabindex="-1"></a>             <span class="at">color =</span> region)) <span class="sc">+</span></span>
-<span id="cb81-6"><a href="day-two-1.html#cb81-6" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> region),</span>
-<span id="cb81-7"><a href="day-two-1.html#cb81-7" tabindex="-1"></a>              <span class="at">method =</span> drc<span class="sc">::</span>drm,</span>
-<span id="cb81-8"><a href="day-two-1.html#cb81-8" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>()),</span>
-<span id="cb81-9"><a href="day-two-1.html#cb81-9" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb81-10"><a href="day-two-1.html#cb81-10" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb81-11"><a href="day-two-1.html#cb81-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb81-12"><a href="day-two-1.html#cb81-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-2-6.png" width="672" /></p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="day-two-1.html#cb108-1" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb108-2"><a href="day-two-1.html#cb108-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> survival,</span>
+<span id="cb108-3"><a href="day-two-1.html#cb108-3" tabindex="-1"></a>             <span class="at">x =</span> temperature, </span>
+<span id="cb108-4"><a href="day-two-1.html#cb108-4" tabindex="-1"></a>             <span class="at">group =</span> genotype,</span>
+<span id="cb108-5"><a href="day-two-1.html#cb108-5" tabindex="-1"></a>             <span class="at">color =</span> region)) <span class="sc">+</span></span>
+<span id="cb108-6"><a href="day-two-1.html#cb108-6" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> region),</span>
+<span id="cb108-7"><a href="day-two-1.html#cb108-7" tabindex="-1"></a>              <span class="at">method =</span> drc<span class="sc">::</span>drm,</span>
+<span id="cb108-8"><a href="day-two-1.html#cb108-8" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>()),</span>
+<span id="cb108-9"><a href="day-two-1.html#cb108-9" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb108-10"><a href="day-two-1.html#cb108-10" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;pink3&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb108-11"><a href="day-two-1.html#cb108-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb108-12"><a href="day-two-1.html#cb108-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="day-two-1.html#cb83-1" tabindex="-1"></a><span class="co"># Estimate the LT50s for each line</span></span>
-<span id="cb83-2"><a href="day-two-1.html#cb83-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
-<span id="cb83-3"><a href="day-two-1.html#cb83-3" tabindex="-1"></a>  <span class="fu">group_by</span>(genotype) <span class="sc">|&gt;</span> </span>
-<span id="cb83-4"><a href="day-two-1.html#cb83-4" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb83-5"><a href="day-two-1.html#cb83-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, <span class="sc">~</span> drc<span class="sc">::</span><span class="fu">drm</span>(hatched<span class="sc">/</span>eggs <span class="sc">~</span> temperature,</span>
-<span id="cb83-6"><a href="day-two-1.html#cb83-6" tabindex="-1"></a>                                    <span class="at">data =</span> .x,</span>
-<span id="cb83-7"><a href="day-two-1.html#cb83-7" tabindex="-1"></a>                                    <span class="at">weight =</span> eggs,</span>
-<span id="cb83-8"><a href="day-two-1.html#cb83-8" tabindex="-1"></a>                                    <span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>(<span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, </span>
-<span id="cb83-9"><a href="day-two-1.html#cb83-9" tabindex="-1"></a>                                                              <span class="st">&quot;upper limit&quot;</span>, </span>
-<span id="cb83-10"><a href="day-two-1.html#cb83-10" tabindex="-1"></a>                                                              <span class="st">&quot;LT50&quot;</span>)),</span>
-<span id="cb83-11"><a href="day-two-1.html#cb83-11" tabindex="-1"></a>                                    <span class="at">type =</span> <span class="st">&quot;binomial&quot;</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb83-12"><a href="day-two-1.html#cb83-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit_tidy =</span> <span class="fu">map</span>(fit, <span class="sc">~</span>broom<span class="sc">::</span><span class="fu">tidy</span>(.x))) <span class="sc">|&gt;</span> </span>
-<span id="cb83-13"><a href="day-two-1.html#cb83-13" tabindex="-1"></a>  <span class="fu">unnest</span>(fit_tidy) <span class="sc">|&gt;</span> </span>
-<span id="cb83-14"><a href="day-two-1.html#cb83-14" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">&quot;LT50&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb83-15"><a href="day-two-1.html#cb83-15" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(estimate))</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-2-7.png" width="672" /></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="day-two-1.html#cb110-1" tabindex="-1"></a><span class="co"># Estimate the LT50s for each line</span></span>
+<span id="cb110-2"><a href="day-two-1.html#cb110-2" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb110-3"><a href="day-two-1.html#cb110-3" tabindex="-1"></a>  <span class="fu">group_by</span>(genotype) <span class="sc">|&gt;</span> </span>
+<span id="cb110-4"><a href="day-two-1.html#cb110-4" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb110-5"><a href="day-two-1.html#cb110-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, <span class="sc">~</span> drc<span class="sc">::</span><span class="fu">drm</span>(hatched<span class="sc">/</span>eggs <span class="sc">~</span> temperature,</span>
+<span id="cb110-6"><a href="day-two-1.html#cb110-6" tabindex="-1"></a>                                    <span class="at">data =</span> .x,</span>
+<span id="cb110-7"><a href="day-two-1.html#cb110-7" tabindex="-1"></a>                                    <span class="at">weight =</span> eggs,</span>
+<span id="cb110-8"><a href="day-two-1.html#cb110-8" tabindex="-1"></a>                                    <span class="at">fct =</span> drc<span class="sc">::</span><span class="fu">LL.3</span>(<span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, </span>
+<span id="cb110-9"><a href="day-two-1.html#cb110-9" tabindex="-1"></a>                                                              <span class="st">&quot;upper limit&quot;</span>, </span>
+<span id="cb110-10"><a href="day-two-1.html#cb110-10" tabindex="-1"></a>                                                              <span class="st">&quot;LT50&quot;</span>)),</span>
+<span id="cb110-11"><a href="day-two-1.html#cb110-11" tabindex="-1"></a>                                    <span class="at">type =</span> <span class="st">&quot;binomial&quot;</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb110-12"><a href="day-two-1.html#cb110-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit_tidy =</span> <span class="fu">map</span>(fit, <span class="sc">~</span>broom<span class="sc">::</span><span class="fu">tidy</span>(.x))) <span class="sc">|&gt;</span> </span>
+<span id="cb110-13"><a href="day-two-1.html#cb110-13" tabindex="-1"></a>  <span class="fu">unnest</span>(fit_tidy) <span class="sc">|&gt;</span> </span>
+<span id="cb110-14"><a href="day-two-1.html#cb110-14" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">&quot;LT50&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb110-15"><a href="day-two-1.html#cb110-15" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(estimate))</span></code></pre></div>
 <pre><code>## Warning: There were 47 warnings in `mutate()`.
 ## The first warning was:
 ## ℹ In argument: `fit = map(...)`.
@@ -254,15 +416,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  9 RFM_48   &lt;tibble&gt; &lt;drc&gt;  LT50  (Interce…     35.2     0.196     179.        0
 ## 10 VTECK_14 &lt;tibble&gt; &lt;drc&gt;  LT50  (Interce…     35.2     0.136     258.        0
 ## # ℹ 14 more rows</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="day-two-1.html#cb86-1" tabindex="-1"></a><span class="co"># Import data &amp; begin again – remake a few visualizations from last week</span></span>
-<span id="cb86-2"><a href="day-two-1.html#cb86-2" tabindex="-1"></a><span class="co"># Run some statistical tests on the data that goes with each visualization</span></span>
-<span id="cb86-3"><a href="day-two-1.html#cb86-3" tabindex="-1"></a><span class="co"># T-test – b/w adult and embryo LT50</span></span>
-<span id="cb86-4"><a href="day-two-1.html#cb86-4" tabindex="-1"></a><span class="co"># ANOVA – one-way within life stage by location – or two-way ANOVA with region &amp; life stage</span></span>
-<span id="cb86-5"><a href="day-two-1.html#cb86-5" tabindex="-1"></a><span class="co"># Tukey HSD post hoc – maybe, but probably not worth the time or confusion</span></span>
-<span id="cb86-6"><a href="day-two-1.html#cb86-6" tabindex="-1"></a><span class="co"># linear regression – LT50 &amp; latitude</span></span>
-<span id="cb86-7"><a href="day-two-1.html#cb86-7" tabindex="-1"></a><span class="co"># Non linear regression – raw survival data – advanced, but fun</span></span>
-<span id="cb86-8"><a href="day-two-1.html#cb86-8" tabindex="-1"></a><span class="co"># Facet-wrap &amp; multi-panel figures</span></span>
-<span id="cb86-9"><a href="day-two-1.html#cb86-9" tabindex="-1"></a><span class="co"># End with a couple challenges – alternative data sets – built in data</span></span></code></pre></div>
 </div>
             </section>
 

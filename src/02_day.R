@@ -69,7 +69,7 @@ dat_long <- dat |>
   mutate(LifeStage = str_remove_all(LifeStage, "_LT50")) |> 
   mutate(LifeStage = factor(LifeStage, levels = c("Embryo", "Adult")))
 
-# 
+# Add points
 dat_long |> 
   ggplot(aes(x = LifeStage,
              y = LT50,
